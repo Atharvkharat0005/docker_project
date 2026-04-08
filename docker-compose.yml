@@ -1,0 +1,55 @@
+version: "3.9"
+services:
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:5173"
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/socialdb
+      - AI_SERVICE_URL=http://ai-service:5001
+    container_name: backend
+    networks:
+      - app-network
+    depends_on:
+      - ai-service
+    ports:
+      - "8000:8000"
+
+  ai-service:
+    build: ./ai_service
+    ports:
+      - "5001:5001"
+    environment:
+      - MODEL_NAME=gemma3:1b
+      - OLLAMA_HOST=http://ollama:11434
+    networks:
+      - app-network
+    depends_on:
+      - ollama
+  ollama:
+    build: ./ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - app-network
+
+
+
+volumes:
+  mongodata:
+  ollama_data:
+
+networks:
+  app-network:
+    driver: bridge
