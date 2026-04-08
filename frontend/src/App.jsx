@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 
 const API_URL = "http://localhost:8000";
 const AI_SERVICE_URL = "http://ai-service:5001";
+const DB_SERVICE_URL = "http://localhost:5000"
 
 function App() {
   const [prompt, setPrompt] = useState('');
@@ -17,12 +18,31 @@ function App() {
     try {
       const res = await axios.post(`${API_URL}/generate`, { prompt, platform });
       setPosts([...posts, res.data]);
+
+      try {
+        await axios.post(`${DB_SERVICE_URL}/posts`,res.data);
+      } catch (error) {
+        console.log("faile to add data to the database");
+        console.log(error);
+      }
+
     } catch (error) {
       console.error("Error generating post:", error);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    async function run() {
+      const res = await axios.get(DB_SERVICE_URL + "/posts");
+      console.log(res.data)
+      setPosts([...res.data]);
+    }
+
+    run();
+    
+  }, [])
 
   useEffect(() => {
     if (loading) {
@@ -38,15 +58,15 @@ function App() {
     <div style={styles.container}>
       <h1 style={styles.header}>Social Media Post Generator</h1>
       <div style={styles.form}>
-        <input 
-          style={styles.input} 
-          value={prompt} 
-          onChange={e => setPrompt(e.target.value)} 
+        <input
+          style={styles.input}
+          value={prompt}
+          onChange={e => setPrompt(e.target.value)}
           placeholder="Enter your prompt"
         />
-        <select 
-          style={styles.select} 
-          value={platform} 
+        <select
+          style={styles.select}
+          value={platform}
           onChange={e => setPlatform(e.target.value)}
         >
           <option>Twitter</option>
@@ -60,7 +80,7 @@ function App() {
       </div>
 
       <h2 style={styles.postsHeader}>Generated Posts</h2>
-      
+
       {loading ? (
         <div
           style={{
@@ -71,7 +91,7 @@ function App() {
       ) : (
         <ul style={styles.postsList}>
           {posts.map(p => (
-            <li key={p.id} style={styles.postItem}>
+            <li key={p._id || p.id} style={styles.postItem}>
               <h3 style={styles.postTitle}>
                 {p.platform}:
               </h3>

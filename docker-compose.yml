@@ -34,7 +34,7 @@ services:
       - app-network
     depends_on:
       - ollama
-      
+
   ollama:
     build: ./ollama
     container_name: ollama
@@ -44,7 +44,15 @@ services:
       - ollama_data:/root/.ollama
     networks:
       - app-network
-
+  
+  worker:
+    build: ./worker
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb+srv://atharvkharat68_db_user:hvccPYMgLuo8l6H5@cluster0.dbpu8k9.mongodb.net/socialdb?retryWrites=true&w=majority
+    networks:
+      - app-network
 
 
 volumes:
