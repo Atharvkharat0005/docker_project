@@ -24,9 +24,13 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend ./frontend
           docker build -t ${{ secrets.DOCKER_USERNAME }}/backend ./backend
           docker build -t ${{ secrets.DOCKER_USERNAME }}/ai-service ./ai_service
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/ollama ./ollama
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/worker ./worker
 
       - name: Push images
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/backend
           docker push ${{ secrets.DOCKER_USERNAME }}/ai-service
+          docker push ${{ secrets.DOCKER_USERNAME }}/ollama
+          docker push ${{ secrets.DOCKER_USERNAME }}/worker
