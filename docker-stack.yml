@@ -1,0 +1,60 @@
+services:
+  frontend:
+    image: rohitsawant31415/frontend
+    ports:
+      - "3000:5173"
+    networks:
+      - app-network
+    deploy:
+      replicas: 1
+
+  backend:
+    image: rohitsawant31415/backend
+    environment:
+      - MONGO_URI=mongodb+srv://YOUR_ATLAS_URL
+      - AI_SERVICE_URL=http://ai-service:5001
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+    deploy:
+      replicas: 2
+
+  ai-service:
+    image: rohitsawant31415/ai-service
+    environment:
+      - MODEL_NAME=gemma3:1b
+      - OLLAMA_HOST=http://ollama:11434
+    ports:
+      - "5001:5001"
+    networks:
+      - app-network
+    deploy:
+      replicas: 1
+
+  ollama:
+    image: rohitsawant31415/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - app-network
+    deploy:
+      replicas: 1
+
+  worker:
+    image: rohitsawant31415/worker
+    environment:
+      - MONGO_URI=mongodb+srv://YOUR_ATLAS_URL
+    networks:
+      - app-network
+    deploy:
+      replicas: 1
+
+volumes:
+  ollama_data:
+
+networks:
+  app-network:
+    driver: overlay
