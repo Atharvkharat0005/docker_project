@@ -30,6 +30,7 @@ services:
     environment:
       - MODEL_NAME=gemma3:1b
       - OLLAMA_HOST=http://ollama:11434
+      - GOOGLE_API_KEY=AIzaSyBRH_a9kBS43Wd9KeG8Naz3Xctr_5-TFKo
     networks:
       - app-network
     depends_on:
