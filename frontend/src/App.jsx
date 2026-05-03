@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 
-const API_URL = "http://localhost:8000";
-const AI_SERVICE_URL = "http://ai-service:5001";
-const DB_SERVICE_URL = "http://localhost:5000"
+const API_URL = import.meta.env.VITE_API_URL;
+const AI_SERVICE_URL = import.meta.env.VITE_AI_SERVICE_URL;
+const DB_SERVICE_URL = import.meta.env.VITE_DB_SERVICE_URL;
 
 function App() {
   const [prompt, setPrompt] = useState('');
