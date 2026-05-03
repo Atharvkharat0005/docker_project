@@ -1,10 +1,6 @@
 services:
   frontend:
     image: rohitsawant31415/frontend
-    environment:
-      - VITE_API_URL=http://localhost:8000
-      - VITE_AI_SERVICE_URL=http://ai-service:5001
-      - VITE_DB_SERVICE_URL=http://localhost:5000
     ports:
       - "3000:5173"
     networks:
@@ -49,8 +45,10 @@ services:
 
   worker:
     image: rohitsawant31415/worker
+    ports:
+      - "5000:5000"
     environment:
-      - MONGO_URI=mongodb+srv://YOUR_ATLAS_URL
+      - MONGO_URI=mongodb+srv://atharvkharat68_db_user:hvccPYMgLuo8l6H5@cluster0.dbpu8k9.mongodb.net/socialdb?retryWrites=true&w=majority
     networks:
       - app-network
     deploy:
