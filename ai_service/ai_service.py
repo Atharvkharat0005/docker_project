@@ -22,7 +22,7 @@ class GenerateRequest(BaseModel):
 MODEL_NAME = os.getenv("MODEL_NAME", "llama2")
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://ollama:11434")
 
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY","AIzaSyA5mCaRs4w6H2V2eZwJ_fWw4-d6ueOTD9g")
 
 client = Client(host=OLLAMA_HOST)
 
