@@ -17,7 +17,7 @@ function App() {
     setLoading(true);
     try {
       const res = await axios.post(`${API_URL}/generate`, { prompt, platform });
-      setPosts([...posts, res.data]);
+      setPosts([ res.data,...posts]);
 
       try {
         await axios.post(`${DB_SERVICE_URL}/posts`,res.data);

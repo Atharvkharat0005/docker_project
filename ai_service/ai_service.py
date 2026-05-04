@@ -65,7 +65,7 @@ def generate(request: GenerateRequest):
         data = res.json()
 
         return {
-            "content": data.get("output", "No response"),
+            "content": data.get("output", f"🚀 {request.platform} post: {request.prompt}. Stay consistent, engage your audience, and deliver value clearly! #Growth #Success"),
             "source": "node_microservice"
         }
 
