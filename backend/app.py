@@ -5,7 +5,7 @@ import httpx
 import os
 
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongo:27017/socialdb")
-AI_SERVICE_URL = os.getenv("AI_SERVICE_URL")
+AI_SERVICE_URL = os.getenv("AI_SERVICE_URL","http://ai-service:5001")
 
 app = FastAPI()
 

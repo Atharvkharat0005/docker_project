@@ -30,9 +30,6 @@ client = Client(host=OLLAMA_HOST)
 def test():
     return {"success": True}
 
-
-MICROSERVICE_URL = os.getenv("MICROSERVICE_URL", "https://ai-api-five-sigma.vercel.app/generate")
-
 @app.post("/generate")
 def generate(request: GenerateRequest):
     print("generating...")
@@ -56,21 +53,26 @@ def generate(request: GenerateRequest):
         print("Ollama failed:", e)
 
     try:
-        res = requests.post(
-            MICROSERVICE_URL,
-            json={"prompt": prompt_text},
-            timeout=60
-        )
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GOOGLE_API_KEY}"
 
+        payload = {
+            "contents": [
+                {
+                    "parts": [{"text": prompt_text}]
+                }
+            ]
+        }
+
+        res = requests.post(url, json=payload)
         data = res.json()
 
         return {
-            "content": data.get("output", f"🚀 {request.platform} post: {request.prompt}. Stay consistent, engage your audience, and deliver value clearly! #Growth #Success"),
-            "source": "node_microservice"
+            "content": data["candidates"][0]["content"]["parts"][0]["text"],
+            "source": "gemini"
         }
 
     except Exception as e:
-        print("Microservice failed:", e)
+        print("Gemini failed:", e)
 
     return {
         "content": f"🚀 {request.platform} post: {request.prompt}. Stay consistent, engage your audience, and deliver value clearly! #Growth #Success",
