@@ -3,8 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import httpx
 import os
-from pymongo import MongoClient
-from bson import ObjectId
 
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongo:27017/socialdb")
 AI_SERVICE_URL = os.getenv("AI_SERVICE_URL")
